@@ -51,7 +51,7 @@ class RegForm(FlaskForm):
     marketcenter = RadioField('Market Center', choices = [('SWMC', 'KW Austin Southwest'),('NWMC','KW Austin Northwest')], default ='SWMC')
     streetspicker = StringField('Find Streets')
     streets = HiddenField()
-    bagnumber = IntegerField('Number of Bags' ,validators=[InputRequired(),NumberRange(0,5000)])
+    bagnumber = IntegerField('Number of Bags' ,validators=[InputRequired(),NumberRange(0,2000)])
 
 @app.route('/modal')
 def modal():
