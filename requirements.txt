@@ -1,0 +1,6 @@
+flask
+flask-bootstrap
+flask-mongoengine
+flask-wtf
+wtforms
+flask-httpauth

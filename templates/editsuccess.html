@@ -1,0 +1,22 @@
+{% extends "layout.html"%}
+{% block title %}
+2018 Food Drive
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='layout.css')}}">
+{%endblock%}
+{% block success %}
+<div class="container-fluid">
+        <div class="row">
+            <div class = "col-sm-4"></div>
+            <div class = "col-sm-4">
+              <h3> Success!</h3>
+              <h4><a href="/">Home</a></h4>
+              <br>
+              <br>
+            </div>
+            <div class = "col-sm-4"></div>
+        </div>
+{%endblock%}
