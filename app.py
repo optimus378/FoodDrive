@@ -70,7 +70,6 @@ def newform():
                           marketcenter = form.marketcenter.data,
                           streets=streets)
             agent.save()
-            flash("Success! Info and Streets Submitted. Thank You!")
             return render_template('editsuccess.html', form = form)
     return render_template('newform.html' ,form = form)
 
