@@ -38,7 +38,7 @@ class Agent(db.Document):
     email = db.EmailField(required = True)
     firstname = db.StringField(max_length=50)
     lastname = db.StringField(max_length=50)
-    bagnumber = db.IntField(max_value=5000, precision=0)
+    bagnumber = db.IntField(max_value=2000, precision=0)
     streets = db.ListField()
     created_at = db.DateTimeField(default=datetime.datetime.now, editable=False,)
 
