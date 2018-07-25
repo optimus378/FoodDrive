@@ -59,7 +59,7 @@
             <td>{{agent.streets | join(': ')}}</td>
             <td>{{agent.bagnumber}}</td>
             <td>{{agent.marketcenter}}</td>
-            <td>{{agent.created_at}}</td>
+            <td>{{agent.created_at.strftime('%Y-%m-%d %H:%M')}}</td>
             <td><a class="btn btn-warning btn-sml" href="/api/deleteagent/{{agent.email}}" role="button">Delete</a></td>
         </tr>
         {%endfor%}
