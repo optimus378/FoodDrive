@@ -6,6 +6,8 @@
     <script src="/static/js/backend.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+    <script src="/static/js/bootstrap-table-mobile.js"></script>
+
 </head>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand">Export CSV</a>
@@ -46,6 +48,7 @@
         <th>Bags</th>
         <th>Market Center</th>
         <th>Submission Date</th>
+        <th>Delete Agent</th>
     </thead>
     <tbody>
         {%for agent in query%} 
@@ -57,6 +60,7 @@
             <td>{{agent.bagnumber}}</td>
             <td>{{agent.marketcenter}}</td>
             <td>{{agent.created_at}}</td>
+            <td><a class="btn btn-warning btn-sml" href="/api/deleteagent/{{agent.email}}" role="button">Delete</a></td>
         </tr>
         {%endfor%}
     </tbody>

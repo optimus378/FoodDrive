@@ -159,6 +159,14 @@ def backendedit(agentemail):
             return redirect('/backend')
     return render_template('backendagent.html', form = form, streets=streets,marketcenter=marketcenter,bags=bags, email= email, firstname=firstname,lastname=lastname, message='')
 
+@app.route('/api/deleteagent/<email>', methods = ['GET'])
+@auth.login_required
+def deleteuser(email):
+    agent = Agent.objects.get(email=email)
+    agent.delete()
+    flash("Agent Deleted.")
+    return redirect('/backend')
+
 @app.route('/api/checkstreet/<street>', methods = ['GET'])
 def checkstreet(street):
     try:
@@ -175,6 +183,7 @@ def checkemail(email):
         return Response(status=200)
     except:
         return Response(status=404)
+
 
 @app.route('/api/export/<marketcenter>')
 def exportcsv(marketcenter):
