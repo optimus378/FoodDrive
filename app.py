@@ -23,7 +23,7 @@ app.config['MONGODB_SETTINGS'] = {
 db = MongoEngine(app)
 ## Authenticated USERS ##
 users = {
-    "foodadmin": "KWDrive45%"
+    "foodadmin": "PasswordHere"
 }
 auth = HTTPBasicAuth()
 @auth.get_password
