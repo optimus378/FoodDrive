@@ -2,7 +2,7 @@ from flask import Flask, render_template,request, redirect, url_for, flash, abor
 from flask_httpauth import HTTPBasicAuth
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, IntegerField, SelectField, TextAreaField, FileField, HiddenField, IntegerField, RadioField
+from wtforms import StringField, PasswordField, BooleanField, IntegerField, SelectField, TextAreaField, FileField, HiddenField, IntegerField, RadioField, ValidationError
 from wtforms.validators import InputRequired, Email, Length, NumberRange
 from flask_wtf.file import FileAllowed, FileRequired
 from flask_mongoengine import MongoEngine
@@ -44,14 +44,24 @@ class Agent(db.Document):
 
 
 ##FORMS ##
+    ## Custom Validator ##
+def bag_multiple_check(form, field):
+        x = field.data
+        if x % 50 != 0:
+            raise ValidationError('Bags must be in multiples of 50')
+        return
+        
+
 class RegForm(FlaskForm):
     email = StringField('Email', validators=[InputRequired(), Email(message='Invalid Email'),Length(max=50)])
     firstname = StringField('First Name', validators=[InputRequired()])
     lastname = StringField('Last Name', validators=[InputRequired()])
     marketcenter = RadioField('Market Center', choices = [('SWMC', 'KW Austin Southwest'),('NWMC','KW Austin Northwest')], default ='SWMC')
-    streetspicker = StringField('Find Streets')
+    streetspicker = StringField(label = 'Find Streets')
     streets = HiddenField()
-    bagnumber = IntegerField('Number of Bags' ,validators=[InputRequired(),NumberRange(0,2000)])
+    bagnumber = IntegerField(label = 'Number of Bags' ,validators=[InputRequired(),NumberRange(0,2000), bag_multiple_check])
+
+
 
 @app.route('/modal')
 def modal():
@@ -94,8 +104,8 @@ def agentpage(agentemail):
                           push__streets=streets,
                           set__email=form.email.data)
             agent.save()
-            flash('Updated '+ agent.email+'.', 'info')
-            return render_template('agentpage.html', form = form, streets=streets,marketcenter=marketcenter,bags=bags, email= email, firstname=firstname,lastname=lastname, message='')
+            flash('Successfully Updated '+ agent.email+'.', 'info')
+            return render_template('editsuccess.html', email = email)
         else:
             print(form.streets.data)
             streetjson = JSON.loads(form.streets.data)
@@ -108,8 +118,8 @@ def agentpage(agentemail):
                           set__streets=streets,
                           set__email=form.email.data)
             agent.save()
-            flash('Updated '+ agent.email+'.','info')
-            return render_template('agentpage.html', form = form, streets=streets,marketcenter=form.marketcenter.data,bags=bags, email= email, firstname=firstname,lastname=lastname, message='')
+            flash('Successfully Updated '+ agent.email+'.','info')
+            return render_template('editsuccess.html', email = email)
     return render_template('agentpage.html', form = form, streets=streets,marketcenter=marketcenter,bags=bags, email= email, firstname=firstname,lastname=lastname, message='')
     
 @app.route('/backend')

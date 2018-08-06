@@ -32,6 +32,7 @@
   {{wtf.form_field(form.lastname, value = lastname)}}
   {{wtf.form_field(form.bagnumber, id = "bags", value=bags)}}
   {{wtf.form_field(form.streetspicker, id="findStreet")}}
+  <p><em>Please type <u>Only the Street Name</u> (No house numbers) and only select from <u>Google Autocomplete.</u></em></p>
   <button type="button"class="btn btn-sml btn-secondary btn-block"onclick="addStreet()">Add Street</button>
   <br>
   {{form.streets(id="streets", value="")}}
