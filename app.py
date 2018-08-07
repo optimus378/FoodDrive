@@ -80,7 +80,7 @@ def newform():
                           marketcenter = form.marketcenter.data,
                           streets=streets)
             agent.save()
-            return render_template('editsuccess.html', form = form)
+            return render_template('editsuccess.html', form = form , email=form.email.data)
     return render_template('newform.html' ,form = form)
 
 @app.route('/agentpage/<agentemail>', methods = ['GET','POST'])
