@@ -1,0 +1,73 @@
+{% extends "root/layout.html" %}
+{%import "bootstrap/wtf.html" as wtf %}
+{% block backend %}
+<head>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyCGbWx7L3jcHLNnEMjZOwaPscWcokXqVBA"></script>
+    <script src="/static/js/backend.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+
+</head>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand">Export CSV</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="/api/export/SWMC">All SWMC<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/api/export/SWMC">All NWMC</a>
+        <li class="nav-item active">
+            <a class="nav-link" href="/api/export/ALL">Export All</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+<div class = "row pt-4">
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+   <ul>
+      {% for message in messages %}
+      <li class="text-success">{{ message }}</li>
+     
+      {% endfor %}
+
+   </ul>
+</div>
+{% endif %}
+{% endwith %}
+<table class="table"data-toggle="table"data-pagination="true" data-search="true" data-sortable="true" data-toolbar=#toolbar data-show-export="true">
+    <thead>
+        <th>Agent Name</th>
+        <th>Email Address</th>
+        <th>Streets</th>
+        <th>Bags</th>
+        <th>Market Center</th>
+        <th>Submission Date</th>
+        <th>Delete Agent</th>
+    </thead>
+    <tbody>
+        {%for agent in query%} 
+        <tr>
+            <td><a href="#theModal" class="nav-link" data-remote="/backend/{{agent.email}}" data-toggle="modal" data-target="#theModal">{{agent.firstname}} {{agent.lastname}}</a>
+            </td>
+            <td>{{agent.email}}</td>
+            <td>{{agent.streets | join(': ')}}</td>
+            <td>{{agent.bagnumber}}</td>
+            <td>{{agent.marketcenter}}</td>
+            <td>{{agent.created_at.strftime('%Y-%m-%d %H:%M')}}</td>
+            <td><a class="btn btn-warning btn-sml" href="{{url_for('root.deleteuser', email = agent.email)}}" role="button">Delete</a></td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+<div class="modal fade text-center" id="theModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+                <div class="modal-body"></div>
+               
+{% endblock %}
+

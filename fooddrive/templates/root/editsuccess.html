@@ -1,0 +1,35 @@
+{% extends "root/layout.html"%}
+{% block title %}
+2018 Food Drive
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='layout.css')}}">
+{%endblock%}
+{% block success %}
+<div class="container-fluid">
+        <div class="row">
+            <div class = "col-sm-4"></div>
+            <div class = "col-sm-4">
+              <br>
+              <br>
+              {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                 <ul>
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                   
+                    {% endfor %}
+              
+                 </ul>
+              {% endif %}
+              {% endwith %}
+              <ul><h5><a href="/">Home</a></h5></ul>
+              <ul><a href="/agentpage/{{email}}">Edit Submission for: {{email}}</a></ul>
+              <br>
+              <br>
+            </div>
+            <div class = "col-sm-4"></div>
+        </div>
+{%endblock%}

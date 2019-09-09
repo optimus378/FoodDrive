@@ -1,0 +1,41 @@
+{%extends "root/layout.html"%}
+{%import "bootstrap/wtf.html" as wtf %}
+{% block newform %}
+<head>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyCGbWx7L3jcHLNnEMjZOwaPscWcokXqVBA"></script>
+<script defer src="/static/js/foodDrive.js"></script>
+</head>
+
+    <br>
+    <h4 id="signup" class="display-5 text-center">Sign up</h4>
+    <hr></hr>
+  <form class="form-signin" , id="form" method = "POST" action ="/">
+    {{ form.csrf_token }}
+    {{ form.hidden_tag() }}
+    {{wtf.form_field(form.marketcenter, id="marketcenter")}}
+    {{wtf.form_field(form.email, id= "email", onblur="checkemail()")}}
+    {{wtf.form_field(form.firstname)}}
+    {{wtf.form_field(form.lastname)}}
+    {{wtf.form_field(form.bagnumber, id = "bags")}}
+    {{wtf.form_field(form.streetspicker, id="findStreet")}}
+ 
+   <p><em>Please type <u>Only the Street Name</u> (No house numbers) and only select from <u>Google Autocomplete.</u></em></p>
+    <button type="button"class="btn btn-sml btn-secondary btn-block"onclick="addStreet()">Add Street</button>
+    <br>
+    {{form.streets(id="streets", value="")}}
+    <br>
+    <table class="table" id ="streettable">
+      <thead>
+        <tr>
+          <th>Current Streets</th>
+          <th>Select</th>
+        </tr>
+      </thead>  
+      <tbody id = "streetrows">
+      </tbody>
+    </table>
+    <br>
+    <button type="button"class="btn btn-lg btn-primary btn-block"onclick="submitForm()">Submit Streets</button>
+    <br>
+  </form>
+{% endblock newform%}
