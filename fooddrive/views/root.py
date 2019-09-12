@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template,request, redirect, url_for, flash, abort, send_file,abort,Response
+from flask import Flask, Blueprint, render_template,request, redirect, url_for, flash, abort, send_file,abort,Response, make_response
 from flask_httpauth import HTTPBasicAuth
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
@@ -8,6 +8,7 @@ from flask_wtf.file import FileAllowed, FileRequired
 from flask_mongoengine import MongoEngine
 from flask_mongoengine.wtf import model_form
 import datetime
+import io
 import csv
 import re
 import json as JSON
@@ -18,7 +19,7 @@ root = Blueprint('root', __name__,template_folder='templates/root')
 
 ## Authenticated USERS ##
 users = {
-    "foodadmin": "WeAreKWYeah#1@"
+    "foodadmin": "Rul33tas11!"
 }
 auth = HTTPBasicAuth()
 @auth.get_password
@@ -186,20 +187,23 @@ def exportcsv(marketcenter):
     else:
         query = Agent.objects(marketcenter=marketcenter)
     querylen = len(query)
-    with open('fooddrive/static/'+marketcenter+'.csv', 'w') as f:
-        writer = csv.writer(f, delimiter=',', lineterminator='\n')
-        writer.writerow(["First Name", "Last Name", "Email", "Streets", "Bags","Submission Date", "Marketcenter"])
-        mc = [query[i]['marketcenter'] for i in range(0,querylen)]
-        firstname = [query[i]['firstname'] for i in range(0,querylen)]
-        lastname = [query[i]['lastname']for i in range(0,querylen)]
-        email = [query[i]['email']for i in range(0,querylen)]
-        streets = [query[i]['streets']for i in range(0,querylen)]
-        bagnumber = [query[i]['bagnumber']for i in range(0,querylen)]
-        created_at = [query[i]['created_at']for i in range(0,querylen)]
-        formattedDate = [datetime.datetime.isoformat(i, sep='-', timespec='minutes') for i in created_at]
-        queryzip=zip(firstname,lastname,email,streets,bagnumber,formattedDate,mc)
-        for row in (queryzip):
-            writer.writerow(row)
+    si = io.StringIO()
+    writer = csv.writer(si, delimiter=',', lineterminator='\n')
+    writer.writerow(["First Name", "Last Name", "Email", "Streets", "Bags","Submission Date", "Marketcenter"])
+    mc = [query[i]['marketcenter'] for i in range(0,querylen)]
+    firstname = [query[i]['firstname'] for i in range(0,querylen)]
+    lastname = [query[i]['lastname']for i in range(0,querylen)]
+    email = [query[i]['email']for i in range(0,querylen)]
+    streets = [query[i]['streets']for i in range(0,querylen)]
+    bagnumber = [query[i]['bagnumber']for i in range(0,querylen)]
+    created_at = [query[i]['created_at']for i in range(0,querylen)]
+    formattedDate = [datetime.datetime.isoformat(i, sep='-', timespec='minutes') for i in created_at]
+    queryzip=zip(firstname,lastname,email,streets,bagnumber,formattedDate,mc)
+    for row in (queryzip):
+        writer.writerow(row)
         writer.writerow([""])
         writer.writerow(["", "", "", "Total Bags", sum(bagnumber)])
-    return send_file('static/'+marketcenter+'.csv', as_attachment=True)
+    output = make_response(si.getvalue())
+    output.headers["Content-Disposition"] = "attachment; filename="+marketcenter+".csv"
+    output.headers["Content-type"] = "text/csv"
+    return output
