@@ -19,7 +19,7 @@ root = Blueprint('root', __name__,template_folder='templates/root')
 
 ## Authenticated USERS ##
 users = {
-    "foodadmin": "Rul33tas11!"
+    "foodadmin": "Apassword!"
 }
 auth = HTTPBasicAuth()
 @auth.get_password
